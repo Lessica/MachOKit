@@ -9,25 +9,29 @@
 import Foundation
 
 extension String {
-    typealias CCharTuple16 = (CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar)
+    @_spi(Support)
+    public typealias CCharTuple16 = (CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar)
 
-    init(tuple: CCharTuple16) {
-        var buffer = tuple
-        self = withUnsafePointer(to: &buffer.0) {
-            let data = Data(bytes: $0, count: 16) + [0]
-            return String(cString: data)!
+    @_spi(Support)
+    public init(tuple: CCharTuple16) {
+        self = withUnsafePointer(to: tuple) {
+            let size = MemoryLayout<CCharTuple16>.size
+            let data = Data(bytes: $0, count: size) + [0]
+            return String(cString: data) ?? ""
         }
     }
 }
 
 extension String {
-    typealias CCharTuple32 = (CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar)
+    @_spi(Support)
+    public typealias CCharTuple32 = (CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar, CChar)
 
-    init(tuple: CCharTuple32) {
-        var buffer = tuple
-        self = withUnsafePointer(to: &buffer.0) {
-            let data = Data(bytes: $0, count: 32) + [0]
-            return String(cString: data)!
+    @_spi(Support)
+    public init(tuple: CCharTuple32) {
+        self = withUnsafePointer(to: tuple) {
+            let size = MemoryLayout<CCharTuple32>.size
+            let data = Data(bytes: $0, count: size) + [0]
+            return String(cString: data) ?? ""
         }
     }
 }
